@@ -22,7 +22,7 @@ import logging
 import os
 import sys
 import json
-
+from datetime import datetime
 import numpy as np
 from datasets import load_dataset
 import jieba 
@@ -46,6 +46,7 @@ from arguments import ModelArguments, DataTrainingArguments
 
 logger = logging.getLogger(__name__)
 
+
 def main():
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
@@ -54,7 +55,7 @@ def main():
         model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
     else:
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
-
+    print(f"[*] Read JSON file DONE: {datetime.now()}")
     # Setup logging
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -74,10 +75,15 @@ def main():
     transformers.utils.logging.enable_explicit_format()
 
     # Log on each process the small summary:
+    print(
+        f"[*] Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}"
+        + f"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}"
+    )
     logger.warning(
         f"Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}"
         + f"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}"
     )
+    print(f"[*] Training/evaluation parameters {training_args}")
     logger.info(f"Training/evaluation parameters {training_args}")
 
     # Set seed before initializing model.
@@ -101,13 +107,16 @@ def main():
         cache_dir=model_args.cache_dir,
         use_auth_token=True if model_args.use_auth_token else None,
     )
-
+    print(f"[*] load_dataset DONE: {datetime.now()}")
     # Load pretrained model and tokenizer
     config = AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
     config.pre_seq_len = model_args.pre_seq_len
     config.prefix_projection = model_args.prefix_projection
 
     tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
+    print(f"[*] load tokenizer DONE: {datetime.now()}")
+
+    print(f"f[*] Load Model from {model_args.model_name_or_path} or {model_args.ptuning_checkpoint}")
 
     if model_args.ptuning_checkpoint is not None:
         # Evaluation
@@ -122,8 +131,10 @@ def main():
     else:
         model = AutoModel.from_pretrained(model_args.model_name_or_path, config=config, trust_remote_code=True)
 
+    print(f"f[*] Load Model DONE: {model}")
+
     if model_args.quantization_bit is not None:
-        print(f"Quantized to {model_args.quantization_bit} bit")
+        print(f"[*] (量化)Quantized to {model_args.quantization_bit} bit")
         model = model.quantize(model_args.quantization_bit)
     if model_args.pre_seq_len is not None:
         # P-tuning v2
@@ -133,6 +144,7 @@ def main():
         # Finetune
         model = model.float()
 
+    print(f"[*] (量化)Quantized to {model_args.quantization_bit} bit DONE: {datetime.now()}")
     prefix = data_args.source_prefix if data_args.source_prefix is not None else ""
 
     # Preprocessing the datasets.
@@ -144,6 +156,7 @@ def main():
     elif training_args.do_predict:
         column_names = raw_datasets["test"].column_names
     else:
+        print("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
         logger.info("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
         return
 
@@ -364,6 +377,7 @@ def main():
     results = {}
     max_seq_length = data_args.max_source_length + data_args.max_target_length + 1
     if training_args.do_eval:
+        print("*** Evaluate ***")
         logger.info("*** Evaluate ***")
         metrics = trainer.evaluate(metric_key_prefix="eval", do_sample=True, top_p=0.7, max_length=max_seq_length, temperature=0.95)
         max_eval_samples = data_args.max_eval_samples if data_args.max_eval_samples is not None else len(eval_dataset)
@@ -373,6 +387,7 @@ def main():
         trainer.save_metrics("eval", metrics)
 
     if training_args.do_predict:
+        print("*** Predict ***")
         logger.info("*** Predict ***")
         predict_results = trainer.predict(predict_dataset, metric_key_prefix="predict", max_length=max_seq_length, do_sample=True, top_p=0.7, temperature=0.95)
         metrics = predict_results.metrics

@@ -4,13 +4,13 @@ NUM_GPUS=1
 
 torchrun --standalone --nnodes=1 --nproc-per-node=$NUM_GPUS main.py \
     --do_train \
-    --train_file AdvertiseGen/train.json \
-    --validation_file AdvertiseGen/dev.json \
+    --train_file /content/ChatGLM2-6B/AdvertiseGen/train.json \
+    --validation_file /content/ChatGLM2-6B/AdvertiseGen/dev.json \
     --preprocessing_num_workers 10 \
     --prompt_column content \
     --response_column summary \
     --overwrite_cache \
-    --model_name_or_path THUDM/chatglm2-6b \
+    --model_name_or_path /content/ChatGLM2-6B/models \
     --output_dir output/adgen-chatglm2-6b-pt-$PRE_SEQ_LEN-$LR \
     --overwrite_output_dir \
     --max_source_length 64 \
