@@ -18,7 +18,18 @@ def main():
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
         if k.startswith("transformer.prefix_encoder."):
-            new_prefix_state_dict[k[len("transformer.prefix_encoder."):]] = v
+            _key = k[len("transformer.prefix_encoder."):]
+            print("Add Key: ", _key)
+            new_prefix_state_dict[_key] = v
+    print(f"[*] Load Checkpoints DONE: {time.time() - start_time} Seconds")
+    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-2000'
+    prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
+    new_prefix_state_dict = {}
+    for k, v in prefix_state_dict.items():
+        if k.startswith("transformer.prefix_encoder."):
+            _key = k[len("transformer.prefix_encoder."):]
+            print("Add Key: ", _key)
+            new_prefix_state_dict[_key] = v
     print(f"[*] Load Checkpoints DONE: {time.time() - start_time} Seconds")
 
     # 量化 4 bit
