@@ -18,16 +18,7 @@ def main():
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
         if k.startswith("transformer.prefix_encoder."):
-            _key = k[len("transformer.prefix_encoder."):]
-            print("Add Key: ", _key)
-            new_prefix_state_dict[_key] = v
-    print(f"[*] Load Checkpoints DONE: {time.time() - start_time} Seconds")
-    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-2000'
-    prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
-    new_prefix_state_dict = {}
-    for k, v in prefix_state_dict.items():
-        if k.startswith("transformer.prefix_encoder."):
-            _key = k[len("transformer.prefix_encoder."):]
+            _key = k[len("transformer.prefix_encoder."):]  # 1 2 both are embedding.weight
             print("Add Key: ", _key)
             new_prefix_state_dict[_key] = v
     print(f"[*] Load Checkpoints DONE: {time.time() - start_time} Seconds")
@@ -49,7 +40,7 @@ def main():
         print(f"\t It takes {time.time() - epoch} Seconds")
         return [t for t in new_history]
 
-    context = ask("你好")
+    context = ask("你好, 我想选一条休闲裤")
     context = ask("我不喜欢这款休闲裤", context)
     context = ask("咱们能不能不聊裤子", context)
     context = ask("进程和线程有什么区别", context)
