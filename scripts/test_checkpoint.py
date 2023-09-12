@@ -1,30 +1,40 @@
+import time
+import torch
 from transformers import AutoConfig, AutoModel, AutoTokenizer
 
 
 def main():
+    start_time = time.time()
     model_path = '../models'
     tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
     config = AutoConfig.from_pretrained(model_path, trust_remote_code=True, pre_seq_len=128)  # pre_seq_len 同训练用的
     model = AutoModel.from_pretrained(model_path, config=config, trust_remote_code=True)
+    print(f"[*] Load Model DONE: {time.time() - start_time} Seconds")
     # load checkpoints
+    start_time = time.time()
     CHECKPOINT_PATH = 'ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
         if k.startswith("transformer.prefix_encoder."):
             new_prefix_state_dict[k[len("transformer.prefix_encoder."):]] = v
+    print(f"[*] Load Checkpoints DONE: {time.time() - start_time} Seconds")
 
     # 量化 4 bit
+    start_time = time.time()
     model.transformer.prefix_encoder.load_state_dict(new_prefix_state_dict)
     model = model.half().cuda()
     model.transformer.prefix_encoder.float()
     model = model.eval()
+    print(f"[*] 4 Bit Q DONE: {time.time() - start_time} Seconds")
     # generate text
 
     def ask(question, history=[]):
+        epoch = time.time()
         response, new_history = model.chat(tokenizer, question, history=history)
         print(f">>> 问: {question}")
         print(f">>> 答: {response}")
+        print(f"\t It takes {time.time() - epoch} Seconds")
         return new_history
 
     context = ask("你好")
