@@ -1,16 +1,16 @@
 PRE_SEQ_LEN=128
 CHECKPOINT=adgen-chatglm2-6b-pt-128-2e-2
-STEP=3000
+STEP=1000
 NUM_GPUS=1
 
 torchrun --standalone --nnodes=1 --nproc-per-node=$NUM_GPUS main.py \
     --do_predict \
-    --validation_file AdvertiseGen/dev.json \
-    --test_file AdvertiseGen/dev.json \
+    --validation_file /home/sd/ChatGLM2-6Bin/AdvertiseGen/dev.json \
+    --test_file /home/sd/ChatGLM2-6Bin/AdvertiseGen/dev.json \
     --overwrite_cache \
     --prompt_column content \
     --response_column summary \
-    --model_name_or_path THUDM/chatglm2-6b \
+    --model_name_or_path /home/sd/ChatGLM2-6Bin/models \
     --ptuning_checkpoint ./output/$CHECKPOINT/checkpoint-$STEP \
     --output_dir ./output/$CHECKPOINT \
     --overwrite_output_dir \
