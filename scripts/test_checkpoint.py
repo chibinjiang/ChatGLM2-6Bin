@@ -13,7 +13,7 @@ def main():
     print(f"[*] Load Model DONE: {time.time() - start_time} Seconds")
     # load checkpoints
     start_time = time.time()
-    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
+    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-2000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
@@ -40,7 +40,7 @@ def main():
         print(f"\t It takes {time.time() - epoch} Seconds")
         return [t for t in new_history]
 
-    context = ask("你好")
+    context = ask("你好")  # 需要固定的开场白
     context = ask("我想选一条休闲裤", context)
     context = ask("我不喜欢这款休闲裤", context)
     context = ask("咱们能不能不聊裤子", context)
