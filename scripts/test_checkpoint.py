@@ -40,7 +40,8 @@ def main():
         print(f"\t It takes {time.time() - epoch} Seconds")
         return [t for t in new_history]
 
-    context = ask("你好, 我想选一条休闲裤")
+    context = ask("你好")
+    context = ask("我想选一条休闲裤", context)
     context = ask("我不喜欢这款休闲裤", context)
     context = ask("咱们能不能不聊裤子", context)
     context = ask("进程和线程有什么区别", context)
