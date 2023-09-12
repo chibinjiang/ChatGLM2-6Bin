@@ -13,7 +13,7 @@ def main():
     print(f"[*] Load Model DONE: {time.time() - start_time} Seconds")
     # load checkpoints
     start_time = time.time()
-    CHECKPOINT_PATH = 'ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
+    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
