@@ -18,6 +18,7 @@ def main():
     # load checkpoints
     start_time = time.time()
     CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
+    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-2-128-2e-2/checkpoint-1000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
@@ -50,6 +51,7 @@ def main():
     context = ask("咱们能不能不聊裤子", context)
     context = ask("进程和线程有什么区别", context)
     context = ask("Python的深拷贝和浅拷贝有什么区别", context)
+    context = ask("写一首表达描写大漠中男儿出塞的七律诗", context)
 
 
 if __name__ == '__main__':
