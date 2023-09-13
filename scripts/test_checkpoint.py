@@ -7,9 +7,13 @@ from transformers import AutoConfig, AutoModel, AutoTokenizer
 def main():
     start_time = time.time()
     model_path = '../models'
-    tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-    config = AutoConfig.from_pretrained(model_path, trust_remote_code=True, pre_seq_len=128)  # pre_seq_len 同训练用的
-    model = AutoModel.from_pretrained(model_path, config=config, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True, revision="")
+    config = AutoConfig.from_pretrained(model_path, trust_remote_code=True, pre_seq_len=128, revision="")
+    # pre_seq_len 同训练用的
+    model = AutoModel.from_pretrained(model_path, config=config, trust_remote_code=True, revision="")
+    # 设置 revision = ""
+    # 避免: Explicitly passing a `revision` is encouraged
+    # when loading a model with custom code to ensure no malicious code has been contributed in a newer revision.
     print(f"[*] Load Model DONE: {time.time() - start_time} Seconds")
     # load checkpoints
     start_time = time.time()
