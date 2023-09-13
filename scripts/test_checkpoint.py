@@ -46,12 +46,13 @@ def main():
         return [t for t in new_history]
 
     context = ask("你好")  # 需要固定的开场白
-    context = ask("我想选一条休闲裤", context)
-    context = ask("我不喜欢这款休闲裤", context)
-    context = ask("咱们能不能不聊裤子", context)
-    context = ask("进程和线程有什么区别", context)
-    context = ask("Python的深拷贝和浅拷贝有什么区别", context)
-    context = ask("写一首表达描写大漠中男儿出塞的七律诗", context)
+    context = ask("我想选一条休闲裤.", context)
+    context = ask("我不喜欢这款休闲裤.", context)
+    context = ask("咱们能不能不聊裤子!", context)
+    context = ask("进程和线程有什么区别?", context)
+    context = ask("Python的深拷贝和浅拷贝有什么区别?", context)
+    context = ask("写一首表达描写大漠中男儿出塞的七律诗.", context)
+    context = ask("99 乘以2 再减去100 等于多少?", context)
 
 
 if __name__ == '__main__':
