@@ -2,7 +2,7 @@
 LR=1e-4
 
 MASTER_PORT=$(shuf -n 1 -i 10000-65535)
-
+# 为什么 他们的 json字段不一样 : https://github.com/SpongebBob/Finetune-ChatGLM2-6B/tree/main
 deepspeed --num_gpus=4 --master_port $MASTER_PORT main.py \
     --deepspeed deepspeed.json \
     --do_train \
