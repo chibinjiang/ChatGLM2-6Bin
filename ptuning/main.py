@@ -116,7 +116,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
     print(f"[*] load tokenizer DONE: {datetime.now()}")
 
-    print(f"f[*] Load Model from {model_args.model_name_or_path} or {model_args.ptuning_checkpoint}")
+    print(f"[*] Load Model from {model_args.model_name_or_path} or {model_args.ptuning_checkpoint}")
 
     if model_args.ptuning_checkpoint is not None:
         # Evaluation
