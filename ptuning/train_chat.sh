@@ -14,7 +14,7 @@ torchrun --standalone --nnodes=1 --nproc-per-node=$NUM_GPUS main.py \
     --history_column history \
     --overwrite_cache \
     --model_name_or_path /home/sd/ChatGLM2-6Bin/models \
-    --output_dir $CHECKPOINT_NAME \
+    --output_dir output/$CHECKPOINT \
     --overwrite_output_dir \
     --max_source_length 2048 \
     --max_target_length 2048 \
