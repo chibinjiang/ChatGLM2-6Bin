@@ -19,7 +19,7 @@ def main():
     start_time = time.time()
     # CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-2-128-2e-2/checkpoint-2000'
     # CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
-    CHECKPOINT_PATH = '../ptuning/output/shadow-chatglm2-6b-pt-128-1e-2/checkpoint-2000'
+    CHECKPOINT_PATH = '../ptuning/output/shadow-chatglm2-6b-pt-128-1e-2/checkpoint-1000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
@@ -66,3 +66,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+ShadowResult = {
+    'train_runtime': 24097.9275,
+    'train_samples_per_second': 1.328,
+    'train_steps_per_second': 0.083,
+    'train_loss': 0.02947828307747841,
+    'epoch': 2000.0
+}

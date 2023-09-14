@@ -1,5 +1,6 @@
 PRE_SEQ_LEN=128
 LR=1e-2
+# learning_rate 会随着step 递减
 NUM_GPUS=1
 CHECKPOINT=shadow-chatglm2-6b-pt-$PRE_SEQ_LEN-$LR
 
