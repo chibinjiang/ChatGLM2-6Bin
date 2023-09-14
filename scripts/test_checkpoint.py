@@ -17,8 +17,9 @@ def main():
     print(f"[*] Load Model DONE: {time.time() - start_time} Seconds")
     # load checkpoints
     start_time = time.time()
-    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-2-128-2e-2/checkpoint-2000'
-    CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
+    # CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-2-128-2e-2/checkpoint-2000'
+    # CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
+    CHECKPOINT_PATH = '../ptuning/output/shadow-chatglm2-6b-pt-128-1e-2/checkpoint-2000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
@@ -45,10 +46,18 @@ def main():
         print(f"\t It takes {time.time() - epoch} Seconds")
         return [t for t in new_history]
 
-    context = ask("你好")  # 需要固定的开场白
-    context = ask("我想选一条休闲裤.", context)
-    context = ask("我不喜欢这款休闲裤.", context)
-    context = ask("咱们能不能不聊裤子!", context)
+    # context = ask("你好")  # 需要固定的开场白
+    # context = ask("我想选一条休闲裤.", context)
+    # context = ask("我不喜欢这款休闲裤.", context)
+    # context = ask("咱们能不能不聊裤子!", context)
+    # context = ask("进程和线程有什么区别?", context)
+    # context = ask("Python的深拷贝和浅拷贝有什么区别?", context)
+    # context = ask("写一首表达描写大漠中男儿出塞的七律诗.", context)
+    # context = ask("99 乘以2 再减去100 等于多少?", context)
+    context = ask("你是谁?")  # 需要固定的开场白
+    context = ask("参见暗影大人.", context)
+    context = ask("不愧是暗影大人.", context)
+    context = ask("暗影大人在计划着什么?", context)
     context = ask("进程和线程有什么区别?", context)
     context = ask("Python的深拷贝和浅拷贝有什么区别?", context)
     context = ask("写一首表达描写大漠中男儿出塞的七律诗.", context)
