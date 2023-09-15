@@ -51,7 +51,7 @@ text = """
 """
 
 
-def main():
+def multiple():
     datasets = defaultdict(list)
     for line in text.split("\n"):
         line = line.strip()
@@ -71,5 +71,21 @@ def main():
             print(str(sample), file=fw)
 
 
+def single():
+    with open("train_simple.json", "w") as fw:
+        for line in text.split("\n"):
+            line = line.strip()
+            if not line:
+                continue
+            conv_id, prompt, shadow = line.split("\t")
+            sample = {
+                "ConversionId": conv_id,
+                "prompt": prompt,
+                "response": shadow,
+                "history": []
+            }
+            print(str(sample), file=fw)
+
+
 if __name__ == '__main__':
-    main()
+    single()

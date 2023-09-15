@@ -28,7 +28,6 @@ def main():
             print("Add Key: ", _key)
             new_prefix_state_dict[_key] = v
     print(f"[*] Load Checkpoints DONE: {time.time() - start_time} Seconds")
-
     # 量化 4 bit
     start_time = time.time()
     model.transformer.prefix_encoder.load_state_dict(new_prefix_state_dict)
