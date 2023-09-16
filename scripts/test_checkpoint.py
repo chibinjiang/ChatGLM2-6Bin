@@ -20,7 +20,7 @@ def main():
     # CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-2-128-2e-2/checkpoint-2000'
     # CHECKPOINT_PATH = '../ptuning/output/adgen-chatglm2-6b-pt-128-2e-2/checkpoint-1000'
     # CHECKPOINT_PATH = '../ptuning/output/shadow-chatglm2-6b-pt-128-1e-2/checkpoint-1000'
-    CHECKPOINT_PATH = '../ptuning/output/shadow2-chatglm2-6b-pt-128-1e-2/checkpoint-3000'
+    CHECKPOINT_PATH = '../ptuning/output/shadow2-chatglm2-6b-pt-128-1e-2/checkpoint-1000'
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}
     for k, v in prefix_state_dict.items():
